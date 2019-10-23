@@ -170,34 +170,10 @@ userSchema.methods.addContributorInfo = function(info, cb) {
  * matches the token given, and will update the validated field if so
  * and return true.
  */
-userSchema.methods.validateUser = function(token, cb) {
-    console.log("In function");
-    console.log("Token to match: " + token);
-    console.log("Matching to: " + this.validationToken);
-    console.log("This user: " + this);
-    if (this.validationToken == token) {
-        console.log("Tokens matched");
-        var o_id = new mongoose.Types.ObjectId(this._id);
-        var user = this.model('User').findOneAndUpdate({'_id': o_id}, {$set: {'validated': true}}, cb);
-        console.log("User updated")
-        user.save();
-        console.log("User saved");
-        return true;
-    }
-    console.log("Returning false");
-    return false;
-    
-};
-
-userSchema.statics.findById = async function(userId, cb) {
-    var o_id = new mongoose.Types.ObjectId(userId);
-    try {
-        let data = await this.find({'_id': o_id}, cb);
-        return data;
-    } catch (reject) {
-        return reject;
-    }
-    
+userSchema.statics.validateUser = async function(userId, token, cb) {
+    var objectId = new mongoose.Types.ObjectId(userId);
+    var updated = await this.findOneAndUpdate({'_id': objectId, 'validationToken': token}, {$set: {'validated': true}}, {new: true}, cb);
+    return updated;
 };
 
 
