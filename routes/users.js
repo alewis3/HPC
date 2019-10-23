@@ -100,8 +100,8 @@ router.get('/validate', async (req, res) => {
       throw err;
     }
     else {
-      console.log(data);
       if (data != null) {
+        console.log(data);
         res.status(200).send({"authenticated": "true"});
       }
       else {
