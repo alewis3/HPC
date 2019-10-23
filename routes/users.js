@@ -85,16 +85,7 @@ router.get('/validate', async (req, res) => {
   const userId = req.query.userId;
   const token = req.query.token;
 
-  console.log(userId + " " + typeof(userId));
-  console.log(token + " " + typeof(token));
-  var user = await User.findById(userId, function(err, data) {
-    if (err) throw err;
-    else return data;
-  });
-  user = new User(user);
-  console.log("new type of user: " + typeof(user) + " " + (user instanceof User));
-  console.log(user.validationToken);
-  var valid = user.validateUser(token, function(err, valid) {
+  var user = await User.validateUser(userId, token, function(err, data) {
     if (err) {
       console.log("The user could not be validated.");
       res.status(403).send({"authenticated": "false", "error": err});
@@ -103,9 +94,22 @@ router.get('/validate', async (req, res) => {
     else {
       console.log("The user with userId " + userId + " was validated successfully!");
       res.status(200).send({"authenticated": "true"});
-      return valid;
+      return data;
     }
   });
+
+  // var valid = user.validateUser(token, function(err, valid) {
+  //   if (err) {
+  //     console.log("The user could not be validated.");
+  //     res.status(403).send({"authenticated": "false", "error": err});
+  //     throw err;
+  //   }
+  //   else {
+  //     console.log("The user with userId " + userId + " was validated successfully!");
+  //     res.status(200).send({"authenticated": "true"});
+  //     return valid;
+  //   }
+  // });
 
 
   

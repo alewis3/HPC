@@ -200,6 +200,12 @@ userSchema.statics.findById = async function(userId, cb) {
     
 };
 
+userSchema.statics.validateUser = async function(userId, token, cb) {
+    var objectId = new mongoose.Types.ObjectId(userId);
+    var updated = await this.findOneAndUpdate({'_id': objectId, 'validationToken': token}, {$set: {'validated': true}}, cb);
+    return updated;
+}
+
 
 var userModel = mongoose.model('User', userSchema);
 
