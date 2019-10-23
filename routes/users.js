@@ -101,7 +101,12 @@ router.get('/validate', async (req, res) => {
     }
     else {
       console.log(data);
-      res.status(200).send({"authenticated": "true"});
+      if (data != null) {
+        res.status(200).send({"authenticated": "true"});
+      }
+      else {
+        res.status(403).send({"authenticated": "false", "error": "User could not be authenticated"});
+      }
       return data;
     }
   });
