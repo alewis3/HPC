@@ -81,6 +81,14 @@ router.post('/login', async (req, res) => {
   res.status(200).send({loginStatus: "true"});
 });
 
+
+/*
+ * This path handles validating a user after they register. in the get request query
+ * there are two variables, the userId, and the token to match to. It calls the static 
+ * method validateUser and sends in those two tokens. Validate user will update the validated
+ * attribute of this user to true if the tokens match and if not, it will not do anything and 
+ * throw an error. 
+ */
 router.get('/validate', async (req, res) => {
   const userId = req.query.userId;
   const token = req.query.token;
@@ -97,22 +105,6 @@ router.get('/validate', async (req, res) => {
       return data;
     }
   });
-
-  // var valid = user.validateUser(token, function(err, valid) {
-  //   if (err) {
-  //     console.log("The user could not be validated.");
-  //     res.status(403).send({"authenticated": "false", "error": err});
-  //     throw err;
-  //   }
-  //   else {
-  //     console.log("The user with userId " + userId + " was validated successfully!");
-  //     res.status(200).send({"authenticated": "true"});
-  //     return valid;
-  //   }
-  // });
-
-
-  
 
 });
 
