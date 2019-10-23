@@ -100,7 +100,7 @@ router.get('/validate', async (req, res) => {
       throw err;
     }
     else {
-      console.log("The user with userId " + userId + " was validated successfully!");
+      console.log(data);
       res.status(200).send({"authenticated": "true"});
       return data;
     }
