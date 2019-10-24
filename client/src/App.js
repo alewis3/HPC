@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import LoginScreen from './LoginScreen';
+import LoginScreen from './components/LoginSceen/LoginScreen';
 
 
 class App extends Component {
