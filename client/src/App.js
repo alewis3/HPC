@@ -17,11 +17,15 @@ class App extends Component {
       <div className="App">
         <Router>
           <Switch>
+            <Route>
+              <h1>Host, Post, and Compost</h1>
+              <p>Welcome to HPC</p>
+            </Route>
             <Route path="/users/login">
               <Login />
               <ButtonSpaceForLogin />
             </Route>
-            <Route>
+            <Route path="/users/register">
               <Register />
               <ButtonSpaceForRegister />
             </Route>
