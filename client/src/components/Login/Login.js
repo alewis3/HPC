@@ -4,6 +4,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
 import axios from 'axios';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import Register from '../Register/Register';
 
 class Login extends Component {
   constructor(props) {
@@ -18,7 +26,7 @@ class Login extends Component {
   // will recieve code and log appropriate response
   loginButton(event) {
     var self = this;
-    var apiBaseUrl = "https://hpcompost.com/login";
+    var apiBaseUrl = "https://hpcompost.com/users";
 
     // test for empty fields
     if (this.state.email === "" || this.state.password === "") {

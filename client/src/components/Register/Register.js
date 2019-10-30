@@ -10,6 +10,12 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
@@ -65,7 +71,7 @@ class Register extends Component {
   // regexTestPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
   registerButton(event) {
-    var apiBasedUrl = "";
+    var apiBasedUrl = "https://hpcompost.com/users";
     var self = this;
 
     console.log("values", this.state.name.first, 
@@ -216,7 +222,6 @@ class Register extends Component {
               style={style}
               onClick={(event) => this.registerButton(event)}
             />
-            <br />
           </div>
         </MuiThemeProvider>
       </div>
