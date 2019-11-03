@@ -18,7 +18,7 @@ class Login extends Component {
   // will recieve code and log appropriate response
   loginButton(event) {
     var self = this;
-    var apiBaseUrl = "https://hpcompost.com/login";
+    var apiBaseUrl = "https://hpcompost.com/api/users";
 
     // test for empty fields
     if (this.state.email === "" || this.state.password === "") {
@@ -35,19 +35,10 @@ class Login extends Component {
     }
 
     axios.post(apiBaseUrl + '/login', payload).then(function(response) {
-      console.log(response);
-
-      if (response.data.code == 200) {
-        console.log("Login successful.");
-      } else if (response.data.code == 204) {
-        console.log("Email password do not match");
-        alert("Email password do not match")
-      } else if (response.data.code == 401) {
-        console.log("incorrect pw");
-        alert("incorrect pw");
-      } else {
-        console.log("Email does not exist");
-        alert("Email does not exist")
+      if (response.status == 200 && response.data.accountType == "Contributor") {
+        window.location.href = "https://hpcompost.com/map";
+      } else if (response.status == 200 && response.data.accountType == "Homeowner" || response.data.accountType == "Business Owner") {
+        window.location.href = "https://hpcompost.com/dashboard.html";
       }
     }).catch(function (error) {
       console.log(error);

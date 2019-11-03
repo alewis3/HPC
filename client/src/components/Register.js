@@ -4,8 +4,8 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
-import Login from '../Login/Login';
-import RadioButtons from '../RadioButtons/RadioButtons'
+import Login from './Login';
+import RadioButtons from './RadioButtons'
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -65,7 +65,7 @@ class Register extends Component {
   // regexTestPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
   registerButton(event) {
-    var apiBasedUrl = "";
+    var apiBasedUrl = "https://hpcompost.com/api/users";
     var self = this;
 
     console.log("values", this.state.name.first, 
@@ -109,7 +109,7 @@ class Register extends Component {
         "first": firstNameTrimmed,
         "last": lastNameTrimmed
       },
-      "email:": emailTrimmed,
+      "email": emailTrimmed,
       "password": passwordTrimmed,
       "DOB": dobTrimmed,
       "address": {
@@ -124,13 +124,7 @@ class Register extends Component {
       console.log(response);
        if (response.data.code == 200) {
          console.log("registration successful");
-         var loginScreen = [];
-         loginScreen.push(<Login parentContext={this} />);
-         var loginMessage = "Not registered yet? Go to registration";
-         self.props.parentContext.setState({loginScreen: loginScreen,
-                                            loginMessage: loginMessage,
-                                            buttonLabel: "Register",
-                                            islogin: true });
+         alert("Registration successful!")
        } else if (response.data.code == 401) {
          console.log("incorrect pw");
          alert("incorrect pw");
@@ -203,9 +197,9 @@ class Register extends Component {
             <FormControl component="fieldset">
               <FormLabel component="legend">Account Type</FormLabel>
               <RadioGroup aria-label="accountType" name="customized-radios" onChange= {(event, newValue) => this.setState({accountType: newValue})}>
-                <FormControlLabel value="contributor" control={<RadioButtons />} label="Contributor" />
-                <FormControlLabel value="homeowner" control={<RadioButtons />} label="Homeowner" />
-                <FormControlLabel value="businessowner" control={<RadioButtons />} label="Businessowner" />
+                <FormControlLabel value="Contributor" control={<RadioButtons />} label="Contributor" />
+                <FormControlLabel value="Homeowner" control={<RadioButtons />} label="Homeowner" />
+                <FormControlLabel value="Business Owner" control={<RadioButtons />} label="Businessowner" />
               </RadioGroup>
             </FormControl>
             <br />
@@ -216,7 +210,6 @@ class Register extends Component {
               style={style}
               onClick={(event) => this.registerButton(event)}
             />
-            <br />
           </div>
         </MuiThemeProvider>
       </div>

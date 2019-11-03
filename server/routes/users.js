@@ -25,6 +25,7 @@ router.post("/register", async (req, res) => {
   var token = uuid();
 
   const json = req.body;
+  console.log(req.body);
   const password = json.password;
   const email = json.email;
   const firstName = json.name.first;
@@ -52,7 +53,7 @@ router.post("/register", async (req, res) => {
     }
     else {
       console.log(data);
-      var url = "https://hpcompost.com/users/validate?userId=" + data._id + "&token=" + token;
+      var url = "https://hpcompost.com/api/users/validate?userId=" + data._id + "&token=" + token;
       testmail(email, firstName, lastName, "Confirm your HPC Account", "Please confirm your account!", "To confirm, click <a href=" + url + ">this link</a>");
       res.status(201).send({"registrationStatus": "true"});
     }
@@ -78,7 +79,12 @@ router.post('/login', async (req, res) => {
   if(!passwordMatch) {
     return res.status(401).send({ loginStatus: "false", message: "The password is invalid" });
   }
-  res.status(200).send({loginStatus: "true"});
+  const validated = user.validated;
+  if(!validated) {
+    return res.status(401).send({ loginStatus: "false", message: "The user is not validated" });
+
+  }
+  res.status(200).send({loginStatus: "true", "accountType": user.accountType});
 });
 
 
@@ -96,16 +102,16 @@ router.get('/validate', async (req, res) => {
   var user = await User.validateUser(userId, token, function(err, data) {
     if (err) {
       console.log("The user could not be validated.");
-      res.status(403).send({"authenticated": "false", "error": err});
+      res.status(403).render('failure', {title: "Your account was not confirmed!"});
       throw err;
     }
     else {
       if (data != null) {
         console.log(data);
-        res.status(200).send({"authenticated": "true"});
+        res.status(200).render('success', {title: "Thank you for confirming your account!", name: data.name.first});
       }
       else {
-        res.status(403).send({"authenticated": "false", "error": "User could not be authenticated"});
+        res.status(403).render('failure', {title: "Your account was not confirmed!"});
       }
       return data;
     }
