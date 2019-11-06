@@ -1,9 +1,12 @@
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { AppBar } from '@material-ui/core';
+import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
 import React, { Component } from 'react';
 import axios from 'axios';
+import theme from '../theme';
+import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
 
 class Login extends Component {
   constructor(props) {
@@ -45,34 +48,41 @@ class Login extends Component {
     });
   }
 
-  render() {
+  render() {  
     return (
       <div>
-        <MuiThemeProvider>
+        <ThemeProvider theme={theme}>
           <div>
-            <AppBar
-              title="User Login"
-            />
+            <AppBar position="static">
+              <Toolbar>
+                <Typography variant="h6" style={style.title}>
+                  Login
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <br />
+            <br />
             <TextField
-              hintText="Email"
-              onChange = {(event, newValue) => this.setState({email: newValue})}
+              label="Email"
+              onChange = {(event, newValue) => this.setState({email: event.target.value})}
             />
             <br/>
             <br/>
             <TextField
+              label="Password"
               type="password"
-              hintText="Password"
-              onChange = {(event, newValue) => this.setState({password: newValue})}
+              onChange = {(event, newValue) => this.setState({password: event.target.value})}
             />
             <br/>
-            <RaisedButton
-              label="Submit" 
-              primary={true} 
+            <br />
+            <Button
+              variant="contained"
+              color="primary"
               style={style}
               onClick={(event) => this.loginButton(event)}
-            />
+            >Submit</Button>
           </div>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </div>
     )
   }
@@ -80,6 +90,9 @@ class Login extends Component {
 
 const style = {
   margin: 15,
+  title: {
+    flexGrow: 1
+  }
 };
 
 export default Login;

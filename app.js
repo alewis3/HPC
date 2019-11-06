@@ -8,11 +8,9 @@ dotenv.config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var aboutRouter = require('./routes/about');
 
 
 var mongoose = require('mongoose');
-//var autoIncrement = require('mongoose-auto-increment');
 
 var connection = mongoose.connect('mongodb://team1:' + encodeURIComponent(process.env.MONGO_PW) + '@localhost:27017/test?authSource=admin&w=1', {useNewUrlParser: true, useUnifiedTopology: true },function (error) {
 
@@ -20,8 +18,6 @@ var connection = mongoose.connect('mongodb://team1:' + encodeURIComponent(proces
   else
     console.log(" **** DB connection successful ****");
 });
-
-//autoIncrement.initialize({connection: connection});
 
 var app = express();
 
@@ -33,11 +29,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/', indexRouter);
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/about', aboutRouter);
 
 
 // catch 404 and forward to error handler

@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { AppBar } from '@material-ui/core';
+import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
-import Login from './Login';
 import RadioButtons from './RadioButtons'
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import theme from '../theme';
+import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
 
 class Register extends Component {
   constructor(props) {
@@ -137,58 +139,65 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <MuiThemeProvider>
+        <ThemeProvider theme={theme}>
           <div>
-            <AppBar title="Register" />
+            <AppBar position="static">
+              <Toolbar>
+                <Typography variant="h6" style={style.title}>
+                  Register
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <br/>
             <br/>
             <TextField 
-              hintText="First name"
+              label="First Name"
               onChange = {this.handleFirstNameChange}
             />
             <br />
             <br />
             <TextField 
-              hintText="Last name"
+              label="Last Name"
               onChange = {this.handleLastNameChange}
             />
             <br />
             <br />
             <TextField 
-              hintText="Email"
-              onChange = {(event, newValue) => this.setState({email: newValue})}
+              label="Email"
+              onChange = {(event, newValue) => this.setState({email: event.target.value})}
             />
             <br />
             <br />
             <TextField 
-              hintText="Password"
+              label="Password"
               type="password"
-              onChange = {(event, newValue) => this.setState({password: newValue})}
+              onChange = {(event, newValue) => this.setState({password: event.target.value})}
             />
             <br />
             <br />
             <TextField 
-              hintText="Date of Birth"
-              onChange = {(event, newValue) => this.setState({DOB: newValue})}
+              label="Date of Birth"
+              onChange = {(event, newValue) => this.setState({DOB: event.target.value})}
             />
             <br />
             <br />
             <TextField 
-              hintText="Street Address"
+              label="Street Address"
               onChange = {this.handleStreetAddressChange}
             />
             <br />
             <TextField 
-              hintText="City"
+              label="City"
               onChange = {this.handleCityChange}
             />
             <br />
             <TextField 
-              hintText="State"
+              label="State"
               onChange = {this.handleStateChange}
             />
             <br />
             <TextField 
-              hintText="Zip Code"
+              label="Zip Code"
               type="number"
               onChange = {this.handleZipChange}
             />
@@ -204,14 +213,14 @@ class Register extends Component {
             </FormControl>
             <br />
             <br />
-            <RaisedButton 
-              label="Submit"
-              primary={true}
+            <Button 
+              variant="contained"
+              color="primary"
               style={style}
               onClick={(event) => this.registerButton(event)}
-            />
+            >Submit</Button>
           </div>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </div>
     );
   }
@@ -219,6 +228,9 @@ class Register extends Component {
 
 const style = {
   margin: 15,
+  title: {
+    flexGrow: 1
+  }
 };
 
 export default Register;
