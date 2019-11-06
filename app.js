@@ -11,7 +11,6 @@ var usersRouter = require('./routes/users');
 
 
 var mongoose = require('mongoose');
-//var autoIncrement = require('mongoose-auto-increment');
 
 var connection = mongoose.connect('mongodb://team1:' + encodeURIComponent(process.env.MONGO_PW) + '@localhost:27017/test?authSource=admin&w=1', {useNewUrlParser: true, useUnifiedTopology: true },function (error) {
 
@@ -19,8 +18,6 @@ var connection = mongoose.connect('mongodb://team1:' + encodeURIComponent(proces
   else
     console.log(" **** DB connection successful ****");
 });
-
-//autoIncrement.initialize({connection: connection});
 
 var app = express();
 
