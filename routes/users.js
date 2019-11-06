@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
 
   var user = await User.findOne({ email: email }).exec();
   if(!user) {
-    return response.status(401).send({ loginStatus: "false", message: "The username does not exist" });
+    return res.status(401).send({ loginStatus: "false", message: "The username does not exist" });
   }
 
   const passwordMatch = bcrypt.compareSync(password, user.password);
@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
     return res.status(401).send({ loginStatus: "false", message: "The user is not validated" });
 
   }
-  res.status(200).send({loginStatus: "true", "accountType": user.accountType});
+  return res.status(200).send({loginStatus: "true", "accountType": user.accountType});
 });
 
 

@@ -8,9 +8,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { MuiThemeProvider } from 'material-ui/styles';
-import RaisedButton from 'material-ui/RaisedButton';
+import { ThemeProvider } from '@material-ui/styles';
+import Button from "@material-ui/core/Button";
 import MapContainer from './components/MapContainer';
+import theme from './theme';
 
 class App extends Component {
   render() {
@@ -49,9 +50,9 @@ function ButtonSpaceForLogin() {
     <div>
       <p>Don't have an account? Register here.</p>
       <Link to="/register">
-        <MuiThemeProvider>
-          <RaisedButton label="Register" primary={true} />
-        </MuiThemeProvider>
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" color="primary">Register</Button>
+        </ThemeProvider>
       </Link>
       <br />
     </div>
@@ -63,9 +64,9 @@ function ButtonSpaceForRegister() {
     <div>
       <p>Already have an account? Login here.</p>
       <Link to="/login">
-        <MuiThemeProvider>
-          <RaisedButton label="Login" primary={true} />
-        </MuiThemeProvider>
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" color="primary">Login</Button>
+        </ThemeProvider>
       </Link>
       <br />
       <br />
