@@ -131,7 +131,7 @@ class Register extends Component {
       "accountType": this.state.accountType
     }
 
-    axios.post(apiBasedUrl + '/register', payload).then(function(response) {
+    axios.post(apiBaseUrl + '/register', payload).then(function(response) {
       console.log(response);
        if (response.data.code == 200) {
          console.log("registration successful");
