@@ -1,18 +1,29 @@
 var express = require('express');
 var router = express.Router();
-
+var is = require('is_js');
 var uuid = require('uuid/v4');
 const bcrypt = require('bcrypt');
-
+const { google } = require('googleapis');
+const OAuth2 = google.auth.OAuth2; 
 let mongoose = require('mongoose');
 let User = require('../models/User');
 let nodemailer = require('nodemailer');
+
+var dotenv = require('dotenv');
+dotenv.config();
 
 const salt = 10;
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
+});
+
+router.options('/register', function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Methods", "POST");
+  res.setHeader("Access-Control-Allow-Headers", "accept, content-type");
+  res.setHeader("Access-Control-Max-Age", "1728000");
+  res.status(200).send();
 });
 
 /*
@@ -25,23 +36,25 @@ router.post("/register", async (req, res) => {
   var token = uuid();
 
   const json = req.body;
-  console.log(req.body);
-  const password = json.password;
   const email = json.email;
   const firstName = json.name.first;
   const lastName = json.name.last;
-  const accountType = json.accountType;
-  const birthdayString = json.DOB;
 
   var newUser = new User({
-    email: email,
-    password: password,
+    email: json.email,
+    password: json.password,
     name: {
-      first: firstName,
-      last: lastName
+      first: json.name.first,
+      last: json.name.last
     },
-    accountType: accountType,
-    birthday: birthdayString, 
+    accountType: json.accountType,
+    birthday: json.DOB, 
+    address: {
+      streetAddress: json.address.streetAddress,
+      city: json.address.city,
+      state: json.address.state,
+      zip: json.address.zip
+    },
     validated: false,
     validationToken: token
   });
@@ -53,8 +66,14 @@ router.post("/register", async (req, res) => {
     }
     else {
       console.log(data);
-      var url = "https://hpcompost.com/api/users/validate?userId=" + data._id + "&token=" + token;
-      testmail(email, firstName, lastName, "Confirm your HPC Account", "Please confirm your account!", "To confirm, click <a href=" + url + ">this link</a>");
+      var url;
+      if (process.env.NODE_ENV == "development") {
+        url = "https://dev.hpcompost.com/api/users/validate?userId=" + data._id + "&token=" + token;
+      }
+      else {
+        url = "https://hpcompost.com/api/users/validate?userId=" + data._id + "&token=" + token;
+      }
+      sendmail(email, firstName, lastName, "Confirm your HPC Account", firstName + ", please confirm your account! Click this link: " + url, firstName + ", please confirm your account by clicking <a href=" + url + ">this link</a>!");
       res.status(201).send({"registrationStatus": "true"});
     }
   });
@@ -118,6 +137,53 @@ router.get('/validate', async (req, res) => {
   });
 
 });
+function sendmail(email, firstName, lastName, subject, body, htmlBody) {
+
+  const oauth2Client = new OAuth2(
+    process.env.CLIENT_ID, // ClientID
+    process.env.CLIENT_SECRET, // Client Secret
+    "https://developers.google.com/oauthplayground" // Redirect URL
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN
+  });
+  const accessToken = oauth2Client.getAccessToken()
+
+  var auth = {
+    type: 'oauth2',
+    user: 'alewis3@stedwards.edu',
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    refreshToken: process.env.REFRESH_TOKEN,
+    accessToken: accessToken
+  };
+
+  // Create a SMTP transporter object
+  let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: auth
+  });
+
+  // Message object
+  let message = {
+      from: 'NO_REPLY <no-reply@hpcompost.com>',
+      to: email,
+      subject: String(subject),
+      text: String(body),
+      html: String(htmlBody)
+  };
+
+  transporter.sendMail(message, (err, info) => {
+      if (err) {
+          console.log('Error occurred. ' + err.message);
+          return process.exit(1);
+      }
+      console.log(JSON.stringify(info));
+      transporter.close();
+  });
+
+}
 
 function testmail(email, firstName, lastName, subject, body, htmlBody) {
 

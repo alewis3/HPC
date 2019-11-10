@@ -21,7 +21,13 @@ class Login extends Component {
   // will recieve code and log appropriate response
   loginButton(event) {
     var self = this;
-    var apiBaseUrl = "https://hpcompost.com/api/users";
+    var apiBaseUrl;
+    if (process.env.NODE_ENV == "development") {
+      apiBaseUrl = "https://dev.hpcompost.com/api/users";
+    }
+    else {
+      apiBaseUrl = "https://hpcompost.com/api/users";
+    }
 
     // test for empty fields
     if (this.state.email === "" || this.state.password === "") {
