@@ -19,6 +19,13 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.options('/register', function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Methods", "POST");
+  res.setHeader("Access-Control-Allow-Headers", "accept, content-type");
+  res.setHeader("Access-Control-Max-Age", "1728000");
+  res.status(200).send();
+});
+
 /*
  * This route handles registering a user. The request will include an email,
  * password, first and last name, account type, and a birthday in string format.
