@@ -2,3 +2,6 @@
 .DS_Store
 /client/node_modules/
 /server/node_modules/
+.env
+package.json
+package-lock.json
