@@ -12,6 +12,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import theme from '../theme';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
+var dotenv = require('dotenv');
+dotenv.config();
 
 class Register extends Component {
   constructor(props) {
