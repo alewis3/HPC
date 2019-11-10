@@ -12,7 +12,7 @@ var usersRouter = require('./routes/users');
 
 var mongoose = require('mongoose');
 
-var connection = mongoose.connect('mongodb://team1:' + encodeURIComponent(process.env.MONGO_PW) + '@localhost:27017/test?authSource=admin&w=1', {useNewUrlParser: true, useUnifiedTopology: true },function (error) {
+var connection = mongoose.connect('mongodb://team1:' + encodeURIComponent(process.env.MONGO_PW) + '@localhost:27017/' + encodeURIComponent(process.env.DATABASE) + '?authSource=admin&w=1', {useNewUrlParser: true, useUnifiedTopology: true },function (error) {
 
   if (error) console.log(error);
   else
@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 
 
 // catch 404 and forward to error handler

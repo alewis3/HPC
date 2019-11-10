@@ -67,7 +67,7 @@ class Register extends Component {
   // regexTestPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
   registerButton(event) {
-    var apiBasedUrl = "https://hpcompost.com/users";
+    var apiBasedUrl = "https://hpcompost.com/api/users";
     var self = this;
 
     console.log("values", this.state.name.first, 
