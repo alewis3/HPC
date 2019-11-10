@@ -7,8 +7,6 @@ import axios from 'axios';
 import theme from '../theme';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
-var dotenv = require('dotenv');
-dotenv.config();
 
 class Login extends Component {
   constructor(props) {
@@ -23,7 +21,13 @@ class Login extends Component {
   // will recieve code and log appropriate response
   loginButton(event) {
     var self = this;
-    var apiBaseUrl = "https://" + encodeURIComponent(process.env.DEV) + "hpcompost.com/api/users";
+    var apiBaseUrl;
+    if (process.env.NODE_ENV == "development") {
+      apiBaseUrl = "https://dev.hpcompost.com/api/users";
+    }
+    else {
+      apiBaseUrl = "https://hpcompost.com/api/users";
+    }
 
     // test for empty fields
     if (this.state.email === "" || this.state.password === "") {

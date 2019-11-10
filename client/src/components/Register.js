@@ -12,8 +12,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import theme from '../theme';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
-var dotenv = require('dotenv');
-dotenv.config();
 
 class Register extends Component {
   constructor(props) {
@@ -29,7 +27,7 @@ class Register extends Component {
         "streetAddress": '',
         "city": '',
         "state": '',
-        "zipCode": 0
+        "zip": 0
       },
       DOB: '',
       accountType: null,
@@ -69,7 +67,13 @@ class Register extends Component {
   // regexTestPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
   registerButton(event) {
-    var apiBasedUrl = "https://" + encodeURIComponent(process.env.DEV) + "hpcompost.com/api/users";
+    var apiBaseUrl;
+    if (process.env.NODE_ENV == "development") {
+      apiBaseUrl = "https://dev.hpcompost.com/api/users";
+    }
+    else {
+      apiBaseUrl = "https://hpcompost.com/api/users";
+    }
     var self = this;
 
     console.log("values", this.state.name.first, 
@@ -88,6 +92,7 @@ class Register extends Component {
         this.state.address.streetAddress === "" || 
         this.state.address.city === "" || 
         this.state.address.state === "" ||
+        this.state.address.zip === 0 ||
         this.state.accountType === null) {
       alert("Fill in all fields!")
       console.log("Missing fields")
@@ -102,6 +107,7 @@ class Register extends Component {
     let streetAddressTrimmed = this.state.address.streetAddress.trim()
     let cityTrimmed = this.state.address.city.trim()
     let stateTrimmed = this.state.address.state.trim()
+    let zip = this.state.address.zip;
 
     // // test pw and zip code
     // if (!this.regexTestPassword.test(this.passwordTrimmed)) {
@@ -120,6 +126,7 @@ class Register extends Component {
         "streetAddress": streetAddressTrimmed,
         "city": cityTrimmed,
         "state": stateTrimmed,
+        "zip": zip,
       },
       "accountType": this.state.accountType
     }
